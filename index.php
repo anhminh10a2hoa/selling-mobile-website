@@ -73,9 +73,9 @@ include_once('admin/database.php');
                         break;
                         case 'success': include_once('modules/success/success.php');
                         break;
-                        case 'index' : include_once('modules/product/product_featured.php');
-                                        include_once('modules/product/product_lastest.php');
-                        break;
+                        // case 'index' : include_once('modules/product/product_featured.php');
+                        //                 include_once('modules/product/product_lastest.php');
+                        // break;
                     }
                 }
                 else{
@@ -84,8 +84,7 @@ include_once('admin/database.php');
                 }
                 ?>
                 </div>
-                 
-            </div>
+                
             
             <div id="sidebar" class="col-lg-4 col-md-12 col-sm-12">
                 <?php

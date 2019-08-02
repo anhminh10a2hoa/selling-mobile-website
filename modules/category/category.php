@@ -1,14 +1,16 @@
 <?php
+//print all of the products
+$cat_id = $_GET['cat_id'];
+$cat_name = $_GET['cat_name'];
 $sql = "SELECT * FROM product
-        INNER JOIN category
-        ON product.cat_id = category.cat_id
-        WHERE category.cat_id = 1
-        LIMIT 9";
+        WHERE cat_id = $cat_id
+        LIMIT 6";
 $query = mysqli_query($conn, $sql);
+$rows = mysqli_num_rows($query);
 ?>
 <!--	List Product	-->
 <div class="products">
-    <h3>iPhone (hiện có 186 sản phẩm)</h3>
+    <h3><?php echo $cat_name;?> (hiện có <?php echo $rows;?> sản phẩm)</h3>
     <?php
     $i = 0;
     while($row = mysqli_fetch_array($query)){
@@ -17,16 +19,23 @@ $query = mysqli_query($conn, $sql);
         }
     ?>
         <div class="product-item card text-center">
-            <a href="#"><img src="admin/img/products/<?php echo $row['prd_image']; ?>"></a>
-            <h4><a href="#"><?php echo $row['prd_name']; ?></a></h4>
+            <a href="index.php?page_layout=product&prd_id=<?php echo $row['prd_id'];?>"><img src="admin/img/products/<?php echo $row['prd_image']; ?>"></a>
+            <h4><a href="index.php?page_layout=product&prd_id=<?php echo $row['prd_id'];?>"><?php echo $row['prd_name']; ?></a></h4>
             <p>Giá Bán: <span><?php echo $row['prd_price']; ?></span></p>
         </div>
     <?php 
         $i++;
         if($i==3){
-            echo '</div>';
             $i=0;
+    ?>
+    </div>
+    <?php
         }
+    }
+    if($i%3 != 0 ){
+    ?>
+    </div>
+    <?php
     }
     ?>
 </div>
