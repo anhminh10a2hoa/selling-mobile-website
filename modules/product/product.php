@@ -22,7 +22,7 @@ $row = mysqli_fetch_array($query);
                 <li id="price-number"> <?php echo $row['prd_price'];?></li>
                 <li id="status"> <?php if($row['prd_status'] == 1) {echo "Còn hàng";} else {echo "Hết hàng";}?></li>
             </ul>
-            <div id="add-cart"><a href="#">Mua ngay</a></div>
+            <div id="add-cart"><a href="index.php?page_layout=cart">Mua ngay</a></div>
         </div>
     </div>
     <div id="product-body" class="row">
@@ -33,7 +33,19 @@ $row = mysqli_fetch_array($query);
             </p>
         </div>
     </div>
-    
+    <?php 
+    if(isset($_POST['sbm'])){
+        //	Form element basic
+        $comm_name			= $_POST['comm_name'];
+        $comm_mail		    = $_POST['comm_mail'];
+        $comm_details		= $_POST['comm_details'];
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $comm_date          = date('Y-m-d H:i:s');
+        $sql = "INSERT INTO comment(prd_id, comm_name, comm_mail, comm_date, comm_details)
+                VALUES('$prd_id', '$comm_name', '$comm_mail', '$comm_date', '$comm_details')";
+        mysqli_query($conn, $sql);
+    }
+    ?>
     <!--	Comment	-->
     <div id="comment" class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
@@ -56,55 +68,30 @@ $row = mysqli_fetch_array($query);
         </div>
     </div>
     <!--	End Comment	-->  
-    
+    <?php
+    $sql = "SELECT * FROM comment
+            WHERE prd_id = $prd_id
+            ORDER BY comm_id DESC";
+    $query = mysqli_query($conn, $sql);
+    ?>
     <!--	Comments List	-->
     <div id="comments-list" class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
+            <?php
+            while($row = mysqli_fetch_array($query)){
+            ?>
             <div class="comment-item">
                 <ul>
-                    <li><b>Nguyễn Văn A</b></li>
-                    <li>2018-01-03 20:40:10</li>
+                    <li><b><?php echo $row['comm_name'];?></b></li>
+                    <li><?php echo $row['comm_date'];?></li>
                     <li>
-                        <p>Kiểu dáng đẹp, cảm ứng rất nhạy, cầm trên tay cảm giác không bị cấn. Chụp ảnh tương đối nét, chơi game rất phê. Nếu giá mềm một chút thì sẽ bán khá chạy. Một sản phẩm tốt mà mọi người có thể cân nhắc.</p>
+                        <p><?php echo $row['comm_details'];?></p>
                     </li>
                 </ul>
             </div>
-            <div class="comment-item">
-                <ul>
-                    <li><b>Nguyễn Văn A</b></li>
-                    <li>2018-01-03 20:40:10</li>
-                    <li>
-                        <p>Kiểu dáng đẹp, cảm ứng rất nhạy, cầm trên tay cảm giác không bị cấn. Chụp ảnh tương đối nét, chơi game rất phê. Nếu giá mềm một chút thì sẽ bán khá chạy. Một sản phẩm tốt mà mọi người có thể cân nhắc.</p>
-                    </li>
-                </ul>
-            </div>
-            <div class="comment-item">
-                <ul>
-                    <li><b>Nguyễn Văn A</b></li>
-                    <li>2018-01-03 20:40:10</li>
-                    <li>
-                        <p>Kiểu dáng đẹp, cảm ứng rất nhạy, cầm trên tay cảm giác không bị cấn. Chụp ảnh tương đối nét, chơi game rất phê. Nếu giá mềm một chút thì sẽ bán khá chạy. Một sản phẩm tốt mà mọi người có thể cân nhắc.</p>
-                    </li>
-                </ul>
-            </div>
-            <div class="comment-item">
-                <ul>
-                    <li><b>Nguyễn Văn A</b></li>
-                    <li>2018-01-03 20:40:10</li>
-                    <li>
-                        <p>Kiểu dáng đẹp, cảm ứng rất nhạy, cầm trên tay cảm giác không bị cấn. Chụp ảnh tương đối nét, chơi game rất phê. Nếu giá mềm một chút thì sẽ bán khá chạy. Một sản phẩm tốt mà mọi người có thể cân nhắc.</p>
-                    </li>
-                </ul>
-            </div>
-            <div class="comment-item">
-                <ul>
-                    <li><b>Nguyễn Văn A</b></li>
-                    <li>2018-01-03 20:40:10</li>
-                    <li>
-                        <p>Kiểu dáng đẹp, cảm ứng rất nhạy, cầm trên tay cảm giác không bị cấn. Chụp ảnh tương đối nét, chơi game rất phê. Nếu giá mềm một chút thì sẽ bán khá chạy. Một sản phẩm tốt mà mọi người có thể cân nhắc.</p>
-                    </li>
-                </ul>
-            </div>
+            <?php
+            }
+            ?>
         </div>
     </div>
     <!--	End Comments List	-->
