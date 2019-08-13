@@ -22,7 +22,7 @@ $row = mysqli_fetch_array($query);
                 <li id="price-number"> <?php echo $row['prd_price'];?></li>
                 <li id="status"> <?php if($row['prd_status'] == 1) {echo "Còn hàng";} else {echo "Hết hàng";}?></li>
             </ul>
-            <div id="add-cart"><a href="index.php?page_layout=cart">Mua ngay</a></div>
+            <div id="add-cart"><a href="modules/cart/cart_add.php?prd_id=<?php echo $prd_id ?>">Mua ngay</a></div>
         </div>
     </div>
     <div id="product-body" class="row">

@@ -3,9 +3,25 @@ include_once('header.php');
     //	List category
 $sql = "SELECT * FROM category";
 $query = mysqli_query($conn, $sql);
-
+$alert = '';
 if(isset($_POST['sbm'])){
-	
+    // File size
+    $maxfilesize = 100000;
+    // File type
+    $allowtypes = array('jpg', 'png', 'PNG', 'JPG');
+    $imageFileType = pathinfo($_FILES['prd_image']['name'], PATHINFO_EXTENSION);
+
+    if($_FILES['prd_image']['size'] > $maxfilesize && !in_array($imageFileType,$allowtypes)){
+        $alert='<div class="alert alert-danger">Ảnh không được vượt quá 100kb!</div><div class="alert alert-danger">Ảnh có đuôi không hợp lệ!</div>';
+    }
+    elseif(!in_array($imageFileType,$allowtypes)){
+        $alert='<div class="alert alert-danger">Ảnh có đuôi không hợp lệ!</div>';
+    }
+    elseif($_FILES['prd_image']['size'] > $maxfilesize){
+        $alert='<div class="alert alert-danger">Ảnh không được vượt quá 100kb!</div>';
+    }
+    else {
+        $alert='';
 	//	Form element basic
 	$prd_name 			= $_POST['prd_name'];
 	$prd_price 			= $_POST['prd_price'];
@@ -16,10 +32,10 @@ if(isset($_POST['sbm'])){
 	
 	//	Form element advanced
 	//	Product thumbnail
-	$prd_image = $_FILES['prd_image']['name'];
-	$prd_tmp_name = $_FILES['prd_image']['tmp_name'];
-	move_uploaded_file($prd_tmp_name, 'img/products/'.$prd_image);
-	
+    $prd_image = $_FILES['prd_image']['name'];
+    $prd_tmp_name = $_FILES['prd_image']['tmp_name'];
+    move_uploaded_file($prd_tmp_name, 'img/products/'.$prd_image);
+    
 	//	Category
 	$cat_id = $_POST['cat_id'];
 	
@@ -40,7 +56,8 @@ if(isset($_POST['sbm'])){
 	$sql = "INSERT INTO product(prd_name, prd_price, prd_warranty, prd_accessories, prd_promotion, prd_new, prd_image, cat_id, prd_status, prd_featured, prd_details)
 			VALUES('$prd_name', '$prd_price', '$prd_warranty', '$prd_accessories', '$prd_promotion', '$prd_new', '$prd_image', '$cat_id', '$prd_status', '$prd_featured', '$prd_details')";
 	mysqli_query($conn, $sql);
-	header('location:product.php');
+    header('location:product.php');
+    }   
 }
 ?>
 	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">			
@@ -93,8 +110,8 @@ if(isset($_POST['sbm'])){
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Ảnh sản phẩm</label>
-                                    
-                                    <input required name="prd_image" type="file">
+                                        <?php echo $alert; ?>
+                                    <input required name="prd_image" id="prd_image" type="file">
                                     <br>
                                     <div>
                                         <img src="img/download.jpeg">

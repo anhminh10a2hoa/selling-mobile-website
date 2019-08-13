@@ -121,17 +121,5 @@ include_once('admin/database.php');
 ?>
 <!--	End Footer	-->
 
-
-
-
-
-
-
-
-
-
-
-
-
 </body>
 </html>
