@@ -1,7 +1,7 @@
 <?php
 session_start();
 include_once('database.php');
-if(isset($_SESSION['mail']) && isset($_SESSION['pass'])) {
+if(isset($_COOKIE['mail']) && isset($_COOKIE['pass'])) {
 	header('location:admin.php');
 }
 ?>
@@ -25,26 +25,46 @@ if(isset($_SESSION['mail']) && isset($_SESSION['pass'])) {
 </head>
 
 <body>
-	<?php
-		if(isset($_POST['sbm'])){
-			$mail = $_POST['mail'];
-			$pass = $_POST['pass'];
-			
-			$sql = "SELECT * FROM user
-					WHERE user_mail='$mail'
-					AND user_pass='$pass'";
-			$query = mysqli_query($conn, $sql);
-			$rows = mysqli_num_rows($query);
-				if($rows > 0) {
-					$_SESSION['mail'] = $mail;
-					$_SESSION['pass'] = $pass;
-					header('location:admin.php');
-				}
-				else{
-					$error = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
-				}
+<?php
+	//Đăng nhập bằng cookie
+	if(isset($_POST['sbm'])){
+		$mail = $_POST['mail'];
+		$pass = $_POST['pass'];
+		
+		$sql = "SELECT * FROM user
+				WHERE user_mail='$mail'
+				AND user_pass='$pass'";
+		$query = mysqli_query($conn, $sql);
+		$rows = mysqli_num_rows($query);
+		if($rows > 0) {
+			setcookie('mail', $mail, time()+60);
+			setcookie('pass', $pass, time()+60);
+			header('location:admin.php');
 		}
-	?>
+		else{
+			$error = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
+		}
+	}
+
+	// if(isset($_POST['sbm'])){
+	// 	$mail = $_POST['mail'];
+	// 	$pass = $_POST['pass'];
+		
+	// 	$sql = "SELECT * FROM user
+	// 			WHERE user_mail='$mail'
+	// 			AND user_pass='$pass'";
+	// 	$query = mysqli_query($conn, $sql);
+	// 	$rows = mysqli_num_rows($query);
+	// 		if($rows > 0) {
+	// 			$_SESSION['mail'] = $mail;
+	// 			$_SESSION['pass'] = $pass;
+	// 			header('location:admin.php');
+	// 		}
+	// 		else{
+	// 			$error = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
+	// 		}
+	// }
+?>
 	<div class="row">
 		<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
 			<div class="login-panel panel panel-default">

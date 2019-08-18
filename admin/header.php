@@ -2,7 +2,10 @@
 	include_once('database.php');
 	session_start();
 	ob_start();
-	if(!isset($_SESSION['mail']) || !isset($_SESSION['pass'])) {
+	// if(!isset($_SESSION['mail']) || !isset($_SESSION['pass'])) {
+	// 	header('location:login.php');
+	// }
+	if(!isset($_COOKIE['mail']) || !isset($_COOKIE['pass'])) {
 		header('location:login.php');
 	}
 ?>
@@ -41,7 +44,7 @@
 						<a class="navbar-brand" href="#"><span>Vietpro</span>Shop</a>
 						<ul class="user-menu">
 							<li class="dropdown pull-right">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> <?php echo $_SESSION['mail'] ?> <span class="caret"></span></a>
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> <?php echo $_COOKIE['mail'] ?> <span class="caret"></span></a>
 								<ul class="dropdown-menu" role="menu">
 									<li><a href="#"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Hồ sơ</a></li>
 									<li><a href="logout.php"><svg class="glyph stroked cancel"><use xlink:href="#stroked-cancel"></use></svg> Đăng xuất</a></li>
