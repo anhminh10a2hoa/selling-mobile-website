@@ -1,8 +1,8 @@
 <?php
 session_start();
 include_once('database.php');
-if(isset($_COOKIE['mail']) && isset($_COOKIE['pass'])) {
-	header('location:admin.php');
+if((isset($_COOKIE['mail']) && isset($_COOKIE['pass'])) && (isset($_SESSION['mail']) && isset($_SESSION['pass']))) {
+	header('location:admin.php'); 
 }
 ?>
 <!DOCTYPE html>
@@ -30,16 +30,22 @@ if(isset($_COOKIE['mail']) && isset($_COOKIE['pass'])) {
 	if(isset($_POST['sbm'])){
 		$mail = $_POST['mail'];
 		$pass = $_POST['pass'];
-		
 		$sql = "SELECT * FROM user
 				WHERE user_mail='$mail'
 				AND user_pass='$pass'";
 		$query = mysqli_query($conn, $sql);
 		$rows = mysqli_num_rows($query);
 		if($rows > 0) {
-			setcookie('mail', $mail, time()+60);
-			setcookie('pass', $pass, time()+60);
-			header('location:admin.php');
+			if(isset($_POST['remember'])){
+				setcookie('mail', $mail, time()+60);
+				setcookie('pass', $pass, time()+60);
+				header('location:admin.php');
+			}
+			else{
+				$_SESSION['mail'] = $mail;
+				$_SESSION['pass'] = $pass;
+				header('location:admin.php');
+			}
 		}
 		else{
 			$error = '<div class="alert alert-danger">Tài khoản không hợp lệ !</div>';
